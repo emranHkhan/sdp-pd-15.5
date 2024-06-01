@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Musician</th>
+        <th scope="col">Instrument</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone Number</th>
+        <th scope="col">Album Name</th>
+        <th scope="col">Release Date</th>
+        <th scope="col">Rating</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for musician in musicians %}
+                {% for album in musician.albums.all %}
+                    <tr>
+                        <td>{{ musician.id }}</td>
+                        <td>{{ musician.first_name }} {{ musician.last_name }} <a class="edit-icons text-decoration-none" href="{% url "mus.edit" musician.id %}">✒</a></td>
+                        <td>{{ musician.instrument_type }}</td>
+                        <td>{{ musician.email }}</td>
+                        <td>{{ musician.phone_number }}</td>
+                        <td>{{ album.album_name }}</td>
+                        <td>{{ album.release_date|date:"F j, Y" }}</td>
+                        <td>{{ album.rating }}</td>
+                        <td>
+                            <a href="{% url "lbm.edit" album.id %}">Edit</a> |
+                            <a href="{% url "mus.delete" musician.id %}">Delete</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td>{{ musician.id }}</td>
+                        <td>{{ musician.first_name }} {{ musician.last_name }}</td>
+                        <td>{{ musician.instrument_type }}</td>
+                        <td>{{ musician.email }}</td>
+                        <td>{{ musician.phone_number }}</td>
+                        <td colspan="3">No albums available</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+      
+    </tbody>
+  </table>
+
+{% endblock %}
